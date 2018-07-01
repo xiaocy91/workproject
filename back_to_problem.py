@@ -101,3 +101,17 @@ fastboot导出的文件都是0kb,且fastboot oem ddrdump show命令可以使用�
 	
 **7
 	2018/6/22	hibbox	hibbox工具导出fastboot日志为0kb	6月1号下午之前的fastboot宏锁了
+
+
+#############################
+
+	
+**8
+	2018/6/26	dump	dump工具导日志没有生成01_android_log	dump工具，在m版本中，13_data_log下有android_log后，就不在生成01_android_log了，而hibbox工具会生成。
+
+
+#############################
+
+	
+**9
+	2018/6/27	hibbox	hibbox解析phoenix和orlando平台bbox.bin文件出错	原因是加入orlando中断表时，中断号有一个写成了412~427，这里中断号必须是一个一个单独的，不能这样写在一起;
