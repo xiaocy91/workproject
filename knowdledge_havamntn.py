@@ -1,3 +1,4 @@
+	知识点概述	说明	知识点描述
 
 #######################
 	hava维测步骤:	hava用例运行	hava维测步骤:
@@ -101,3 +102,54 @@ kirin710_4_9_pkg_drv_device_dev3_usb_device_udp.txt
 2.然后进入到mntn目录，看是否有分支，使用命令git branch，否则就要新建分支;
 3.git add文件，git commit文件，如果错了可以使用reset撤销提交，提交的的单号固定，描述就写你为什么提交，如果是新代码就是feature，如果是修复bug就是debugfix;
 4.然后repo上传你提交的代码;
+
+#######################
+	平台的区分		**平台的区分
+miami 6260
+chicago 960
+boston 970
+atlanda 980
+
+#######################
+	gcov覆盖率提升的事情		gcov覆盖率提升的事情
+1.打开覆盖率数据显示界面，选择时间，选择dev2组，显示;
+2、找到孔飞-底软驱动，ST当前这一列，点进去，再点进去，就看到具体覆盖了哪些文件，包括覆盖的文件、未覆盖的文件、不在责任田的文件、不需要跑的文件;其中，不在责任田的文件要把它移进去;
+3、把没有覆盖的.c文件复制到notepad++中，搜索mntn关键字，找出哪些是属于mntn的，然后根据ddrdump_kernel.c来看，是不是ddrdump的用例没有上，以此类推;
+4、如果用例上了，但是覆盖率还是没有，就要看是否有cogv文件和codn文件，下载今天最新的运行后的压缩包，来看;打开压缩包后，打开一个.html文件，就可以看到该文件的覆盖率;因为hava平台每天运行完用例后，自动就把gcov上传了，担心的是没有把gcov上传上去;
+5、如果用例上了，运行后的压缩包下载下来也有cogv和codn文件，还是没有覆盖到，那就要看主线代码，vendor/../cfg.txt文件中，是否配置了.c文件，+代表该文件存在，-表示该.c文件不存在;
+
+
+#######################
+	blackbox代码框架学习		*blackbox代码框架学习
+1、从rdr_core.c文件看起;
+2、然后看hisi_app.c文件;
+3、rdr_core中的init在hisi_app中的init之前;
+4、主要看见个流程，pstore中日志，打印bbox_main关键字的启动后流程和;kmsgcat-log中，打印带有bootcheck关键字的复位流程;
+5、复位流程从can not. ..start boot开始，到boot done结束，中间是打印关键字boot check;
+6、快捷键
+6.1、;+s，光标所在函数，查找该函数所在位置;
+6.2、;+f+s，光标不在要查找的函数上，输入cs find s，然后输入要查找的函数，可以查找出全部相关函数;
+6.3、shit+#，光标所在关键字，高亮所有对应相同的关键字;
+6.4、ctrl+]，光标所在函数，跳转到该函数定义的位置;
+6.5、ctrl+T，返回上一步;
+6.6、快捷键左、下、上、右，对应h、j、k、l，加上ctrl+w就可以在不同的窗口下切换;
+
+#######################
+	gcov中fastboot数据适配		fastboot数据适配
+1、首先找到已经配置好的jekins，第一行，都以这个为模板;
+2、需要配置4个shell，现在维测的gcov只有三个shell，第一个shell是git_download，用来下载日志等;第二个是git_cov，运行生成kernel_obj;第三个是git_fast，运行生成fastboot_obj；还有一个是……
+3、所以，在适配gcov fastboot时，所有执行fastboot boot、fastboot reboot、fastboot oem boot命令时，都要先把导出数据来，导出位置必须放在qtandroid下载，相对路径的git下面;
+
+代码逻辑
+1、判断version，提需求加一个COMM或者GCOV？还有Sysconfig中获取version，我这里代码里没有？
+2、判断fastboot命令，我这里log path路径并不知道？怎么一会是GCOV目录一会是get_GCOV目录？
+
+			fastboot数据适配，代码编写遇到的问题:
+1、pylib下一个log.py，里面是EXECUTE类，里面包含执行EXE(cmd)的函数；
+2、在pylib下添加一个GcovFastboot.py文件，里面是GcovFastbootDump类，类里面要写处理fastboot的命令，如果是fastboot命令，就需要执行EXECUTE里面的EXE(cmd)来处理fastboot命令。
+3、所以，这样问题是？
+GcovFastboot.GcovFastbootDump类里面，要调用log.EXECUTE里面的EXE(cmd)方法；而log.EXECUTE.printEXE又要调用GcovFastboot.GcovFastbootDump里面的方法。不能两个文件相互导入对方吧？
+4、处理办法
+4.1、方法一。GcovFastboot.GcovFastbootDump里面不执行log.EXECUTE.EXE(cmd)方法，只是处理完fastboot命令，合成要导出数据的命令fastboot oem memorydump，然后log.EXECUTE中调用处理好的fastboot oem memorydump命令；
+4.2、方法二。把log.EXECUTE.EXE(cmd)方法，直接当参数，传入到GcovFastboot.GcovFastbootDump里面，直接使用传入的EXEXE(cmd)方法执行fastboot oem memorydump命令；
+5、总的来说，就是把log.EXECUTE当成主对象，把GcovFastboot.GcovFastbootDump当成被调用的对象！

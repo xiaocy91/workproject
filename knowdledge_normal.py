@@ -1,3 +1,4 @@
+	知识点概述	说明	知识点描述
 
 #######################
 	sudo命令		ubuntu系统，sudo命令   #执行命令时，预设身份为root来执行，授予这个权限时会要求输入密码
@@ -389,3 +390,232 @@ scp -r root@hots1:/tmp  /tmp
 (repo upload等价于git push操作，只是git是直接提交到远程仓库，然后repo是提交到代码审核的服务器上，这个涉及到gerrit框架设计。)
 8.提交时需要填写单号，描述就是update hibbox version to V271，如果是开发就填feafure，如果是修改缺陷问题提交代码就填debug，让后保存后就自动提交，如果不保存就不提交；
 9如果重新修改后，再次提交，单号不变，但是提交时使用git commit -amend。git commit -amend会在最后一次提交的基础上去提交，不会重新提交新的；
+
+#######################
+	logging模块	python logging 替代print 输出内容到控制台和重定向到文件	1、python logging 替代print 输出内容到控制台和重定向到文件
+import logging  
+logging.debug('debug message')  
+logging.info('info message')  
+logging.warning('warning message')  
+logging.error('error message')  
+logging.critical('critical message')  
+输出：
+WARNING:root:warning message
+ERROR:root:error message
+CRITICAL:root:critical message
+2、默认情况下python的logging模块将日志打印到了标准输出中，且只显示了大于等于WARNING级别的日志；
+3、这说明默认的日志级别设置为WARNING（日志级别等级CRITICAL > ERROR > WARNING > INFO > DEBUG > NOTSET）；
+
+#######################
+	二进制文件跳转到指定地址	notepad++中ctrl+g快捷键使用	notepad++中，二进制文件地址定位ce17；ctrl+g可以跳到指定地址；
+
+#######################
+	vars函数使用	python查看内置函数和属性的方法	python查看内置函数和属性的方法
+dir():默认打印当前模块的所有属性，如果传一个对象参数则打印当前对象的属性
+vars():默认打印当前模块的所有属性，如果传一个对象参数则打印当前对象的属性
+
+
+#######################
+	维测工具遇到的问题:		维测工具遇到的问题:
+1、 logging模块打印输出到textcontrl控件，将textcontrl对象传入到logging模块，然后输出打印;
+2、 wxpython文件拖拽解析的实现;使用drag实现;
+3、子线程修改主线程中的图形界面。使用pubsub模块，子线程使用CallAfter发送消息，主线程使用获取消息后更新界面;
+4、python报错，keyerror,setmosize
+QT designer中mainwindow.ui控件调用
+QT designer中帮助文档使用;
+
+#######################
+	git使用		repo start brach --all
+git cherry-pick  xxx
+关于git中cherry-pick的使用，选择一部分提交的代码合并到另一个分支
+
+#######################
+	git使用		repo upload 时报错
+
+$ repo upload
+如果有多个项目同时进行了改动，为了避免出错，会弹出编辑器显示有改动需要提交的项目列表。将希望提交的分支前的注释去掉，就可以将该项目的分支执行推送动作；
+# Uncomment the branches to upload:
+#
+# project test/test1/:
+branch jiangxin ( 1 commit, Mon Oct 25 18:04:51 2010 +0800):
+#         4f941239 0.2-dev -> 0.2-jiangxin
+#
+# project test/test2/:
+branch jiangxin ( 1 commit, Mon Oct 25 18:06:51 2010 +0800):
+#         86683ece 0.2-dev -> 0.2-jiangxin
+
+
+#######################
+	进程线程相关问题		进程线程相关问题
+1、线程或进程间通信
+from queue import Queue
+q = Queue()
+q.put(value)
+q.get(value)
+
+2、进程池
+from multiprocessing import pool
+import qu
+p = pool(4)
+pool.apply_async
+
+3、线程池
+3.1、2.7中使用Threapool，需要pip install Threadpool安装;
+3.2、3.0以上内置ThreadpoolExecute;
+from concurrent.features import ThreadpoolExecute
+pool = ThreadpoolExecute(10)
+pool.submit(func,args)
+
+
+#######################
+	问题		问题，重要:
+1.0x203在bbox中是怎么改的？
+
+#######################
+	线程与进程学习		线程与进程学习
+1.线程
+from threading import Thread
+class MyThread(Thread):
+    def __init__(self,func,args,textctrl,que):
+        Thread.__init__(self)
+         self.func=func
+         self.args=args
+         self.textctrl = textctrl
+         self.que=que
+
+2.线程池
+2.1.Python2.7需要安装pip install threadpool，然后导入:
+from threadpool import ThreadPool;
+
+2.2.Python3.0以上，自带了ThreadPoolExecutor，需要导入:
+from concurrent.features import ThreadPoolExecutor;
+
+2.3.现在学习使用Threadpool:
+pool = ThreadPool(4)
+requests=pool.makerequests(func,args)
+for req in requests:
+   pool.putrequest(req)
+pool.wait()
+
+
+
+#######################
+	线程与进程学习		线程与进程学习 
+4.进程
+from multiprocessing import process
+p=process(func,args)
+p.start
+5.进程池
+from multiprocessing import pool
+p=pool(4)
+for i in range(16):
+    p.apply_async(func,args)
+p.close()
+p.join()
+
+6.线程、线程间通信queue
+from Queue import Queue
+
+#######################
+	拓展学习	拓展整理下正则表达式，开源日志系统	
+做开发就是很忙的，我现在做公司监控系统的开发，交付压力也不小;
+主要是你做的东西有点杂，不成系统;
+这个测试工具，应该涉及到兼容多个平台，正则匹配和日志处理的东西。可以拓展整理下正则表达式，开源日志系统;
+
+#######################
+	hibbox问题严重性		hibbox问题严重性
+只要导出日志没出问题;
+只要解析没出问题;
+其他都是小问题！
+
+#######################
+	Excel操作		写Excel我们需要使用第三方库xlwt，和xlrd一样，xlrd表示read xls，xlwt表示write xls
+
+#######################
+	wxpython的拖拽的使用：		wxpython的拖拽的使用：
+import wx
+class FileDropTarget(wx.FileDropTarget):
+    def __init__(self, window):
+        wx.FileDropTarget.__init__(self)
+        self.window = window
+
+    def OnDropFiles(self,  x,  y, fileNames):
+        self.window.SetValue(str(fileNames))
+class MyFrame(wx.Frame):
+
+    def __init__(self, parent, id):
+
+        wx.Frame.__init__(self, parent, id, title = u'拖放例子', size = (778,494))
+        panel=wx.Panel(self)
+        textBox=wx.TextCtrl(panel, pos = (50, 50),size =(300, 200))
+        dropTarget = FileDropTarget(textBox)
+        textBox.SetDropTarget( dropTarget )
+if __name__=='__main__':
+    app=wx.App()
+    frame=MyFrame(parent=None,id=-1)
+    frame.Show(True)
+    app.MainLoop()
+
+#######################
+	C语言中#ifdef，#ifndef和#endif的作用：
+1、用于注释掉一段代码
+2、防止头文件重复包含		C语言中#ifdef，#ifndef和#endif的作用
+
+1、用于注释掉一段代码
+编写程序时，需要看到一系列的调试代码，但是发给客户时，客户不希望看到什么什么OK的代码，所以我们希望能很容易地注释掉这段代码。 
+这时需要用到预处理指令 #ifdef 和 #endif ：
+#include <stdio.h>
+#define CONFIG_DEBUG 
+int main(){
+    FILE *fp;
+    fp=fopen(D:\\DEV\\test.txt,r); 
+    if(NULL==fp){
+        printf(error!);
+    }
+#ifdef CONFIG_DEBUG 
+    printf(open test.txt ok);
+#endif
+    return 0;
+}
+如果文件在那个路径没错的话，将会打印如下信息： 
+open test.txt ok
+如果不想看到这样的调试信息，注释掉#define CONFIG_DEBUG这句就行。
+			2、防止头文件重复包含
+a.h
+#include <stdio.h>
+#include b.h
+
+b.h
+#include a.h
+
+c.c
+#include a.h
+#include b.h
+int main(){
+    printf(Hello!);
+}
+如果程序是这样写，编译器就会出现Error #include nested too deeply的错误。 
+因为这里 b.h 和 a.h 都互相包含，c.c文件在include的时候重复include了a.h，我们希望c.c文件中执行#include b.h的时候 b.h 能进行判断，如果没有#include a.h则include，如果已经include了，则不再重复定义。
+
+可以将b.h修改为：
+#ifndef _A_H
+#define _A_H 
+#include a.h
+#endif
+
+#######################
+	copy.copy和copy.deepcopy的使用		1、copy.copy和copy.deepcopy的使用？
+copy.copy为浅copy，只复制了第一层数据，子列表是没有copy；copy.deepcopy，复制就不会改变子列表的值了，是因为deepcopy将子列表也复制了一份。
+例如：
+import copy
+list = ['beijing','tianjin','hebei',['neimeng','xinjiang'],'wuhan']
+list_copy = copy.deepcopy(list)
+list[3][0] = 'taiwan'
+print(list)
+print(list_copy)
+结果显示：
+['beijing', 'tianjin', 'hebei', ['taiwan', 'xinjiang'], 'wuhan']
+['beijing', 'tianjin', 'hebei', ['neimeng', 'xinjiang'], 'wuhan']
+
+2、class类中全局变量
+class类中全局变量，是所有对象共用的，每个类都可以对全局变量进行修改；如果要每个对象的全局变量互不影响，需要使用copy.deepcopy。
