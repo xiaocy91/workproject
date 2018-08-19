@@ -1,3 +1,4 @@
+	序号	时间	工具	问题	原因及解决方法
 
 
 #############################
@@ -100,7 +101,7 @@ fastboot导出的文件都是0kb,且fastboot oem ddrdump show命令可以使用�
 
 	
 **7
-	2018/6/22	hibbox	hibbox工具导出fastboot日志为0kb	6月1号下午之前的fastboot宏锁了
+	2018/6/22	hibbox	hibbox工具导出fastboot日志为0kb	miami平台，6月1号下午之前的fastboot宏锁了
 
 
 #############################
@@ -115,3 +116,45 @@ fastboot导出的文件都是0kb,且fastboot oem ddrdump show命令可以使用�
 	
 **9
 	2018/6/27	hibbox	hibbox解析phoenix和orlando平台bbox.bin文件出错	原因是加入orlando中断表时，中断号有一个写成了412~427，这里中断号必须是一个一个单独的，不能这样写在一起;
+
+
+#############################
+
+	
+**10
+	2018/7/8	hibbox	导出hisi_logs/memorydump失败	问题：版本问题
+状态：closed
+导出hisi_logs/memorydump失败，在getlog中有提示adb shell pull memorydump 失败，说明没有权限导出memorydump文件！
+
+
+#############################
+
+	
+**11
+	2018/7/8	hibbox	hisi_logs下没有产生history.log	问题：版本问题
+状态：closed
+hisi_logs下没有产生history.log？查看total_file_num.txt，查找hisi_logs关键字，看看有没有导出history.log文件，发现没有记录history.log文件，说明手机里面没有生成！为了验证这种想法，手动在手机/data/hisi_logs下创建一个history.log，然后再用hibbox工具导出，发现导出了history.log，所以是因为手机没有生成所以没有导出，不是hibbox工具问题！
+
+
+#############################
+
+	
+**12
+	2018/7/12	hibbox	手机黑屏下，发现只导出了fastboot下日志，没有正常启动的kernel日志	
+问题：版本问题
+状态：closed
+手机是黑屏状态，然后导日志，发现只导出了fastboot下日志，没有正常启动的kernel日志。是不是工具的问题导致没有导出日志？
+通过get_log.log文件，查看导出日志，手机开始是fastboot状态，让后进入kernel等待180秒，最后导出结束。因为没有等到进入kernel，所以没有导出日志，不是工具的问题。
+
+
+#############################
+
+	
+**13
+	2018/8/7	??	??	要记录的问题
+1、dump工具导出日志，dump done 不代表日志导出完成了，还要在等会。因为主线程走完了，子线程还在导;
+2、dump工具直接执行dump log info kernel data-log导出日志，为什么报出save kernel failed的错误？
+3、hibbox导出日志，无法导出13_data_log/LogService下的文件。
+4、日志离线解析中，reliabilty/apperace下有hisitory.log，且其中的记录的复位未知，导致出现unknown！
+5、上次版本验证中，hibbox无法导出日志。trace工具解析有问题？
+					
