@@ -1,3 +1,4 @@
+标记	时间	需求类型	需求详情		问题		代码实现
 
 ##################################
 	2018/3/22	
@@ -227,3 +228,70 @@ closed:
 
 	ftp_log.log中换行符在数据中间：
 在sql.py中像ftp_log.log中添加了数据，在另外一个中blame和ftp_log方法中有写入数据，调用这两个写入的地方在utf_addr_version中		1、ftp.py被打包成了ftp.exe执行，系统调用config/ftp.exe，而不是调用ftp.py；整个hibbox项目用py2打包，只有ftp.py用pyinstaller打包；
+
+##################################
+	2018/7/8	Hibbox需求	林俊杰Exception解析	
+问题>>>>>：
+
+	1、copy.deepcopy的使用？
+class类中全局变量，是所有对象共用的，每个类都可以对全局变量进行修改；如果要每个对象的全局变量互不影响，需要使用copy.deepcopy。
+
+2、数据是否写满：
+在parse_one_cpu时，要根据头部的self.full来判断文件是否写满。如果写满了取数据的次数为(0,self.maxnum)，并且读取的全部数据需要重新排序，即datalist=datalist[self.rear:]+datalist[:self.rear]；如果没有写满，取数据的次数为(0,self.rear)；		底软C代码中，数据结构u8、u16、u32分别代表：
+u8 是 unsigned char
+u16 是 unsigned short
+u32 是 unsigned int
+							Python 十进制转二进制、八进制、十六进制
+dec = int(input(输入数字：))
+
+print(十进制数为：, dec)
+print(转换为二进制为：, bin(dec))
+print(转换为八进制为：, oct(dec))
+print(转换为十六进制为：, hex(dec))
+执行以上代码输出结果为：
+输入数字：5
+十进制数为：5
+转换为二进制为： 0b101
+转换为八进制为： 0o5
+转换为十六进制为： 0x5
+							extrace解析
+1.Apexc 0x200大小、BL31exc 0x100大小，数据结构一样；BL31smc 0x3F00大小；
+2.它们的头部都是一样的，使用hisiap_ring_buffer这个结构来存放；只是数据单元部分有点区别；
+3.APexc、BL31exc是分cpu的，BL31smc是不分cpu的；
+4.通过shift.BBOX_SHIFT.shift(EXTRACE)方法来获取基地址0x7c000；
+5.然后开始解析，需要在hisiap_ring_buffer这个类里面添加解析方法，方法为parse，传入一个对象，对象包含参数addr、offset，读取的数据存放到hisiap_ring_buffer，这样头部就初始化好了；根据头部信息来解析这个数据段；
+
+							repr() 函数将对象转化为供解释器读取的形式extrace解析
+							ord()函数主要用来返回对应字符的ascii码，chr()主要用来表示ascii码对应的字符他的输入时数字，可以用十进制，也可以用十六进制。
+							Exception适配遇到的问题
+1、struct.unpack中使用X补全
+1.1补全的例子
+  string = 'test astring'  
+ format = '5s 4x 3s'  
+ print struct.unpack(format, string) # ('test ', 'ing')  
+1.2 在smc中为什么要5X补全
+smc的数据结构是u64、u8、u8、u8和一个union中包含u64或者u32，只包含其中一个；
+2、deep.copy的使用？？
+3、在解析中ringbuffer和ringbuffer_with_id_count两个类，两个类中都有perse_to_head和perse_one_cpu方法，所以这两个方法是公共的，所以最好用继承的方式来用，而不要重复写这个方法；
+4、在parse_one_cpu时，要根据头部的self.full来判断文件是否写满。如果写满了取数据的次数为(0,self.maxnum)，并且读取的全部数据需要重新排序，即datalist=datalist[self.rear:]+datalist[:self.rear]；如果没有写满，取数据的次数为(0,self.rear)；
+5.round方法可以保留小数点后面几位，round(num,num_digits)，num_digits是四舍五入保留的小数位；
+6.zip函数可以将多个列表压缩为字典；
+
+
+##################################
+	2018/7/8	Hibbox需求	袁旦，ftp.log生成后不删除	
+问题>>>>>：
+
+	ftp.py修改后，需要重新打包成ftp.exe		1.ftp这一块的问题
+1.1、ftp.py中，发送消息message中，引入了pika第三方库，所以要用pyinstaller打包成ftp.exe，因为使用.py时，参数不能太长，有长度限制！
+1.2、注释掉ftp中os.path.exists('ftp.log')后，运行hibbox还是没有产生ftp.log文件；是因为没有将ftp.py重新打包成ftp.exe，hibbox运行中实际调用的ftp.exe，而不是调用ftp.py文件！
+
+
+##################################
+	2018/7/17	Hibbox需求	林俊杰，kerneldump解析	
+问题>>>>>：
+
+	seg的结构体就是u64 addr、u64 size，这个seg的size不包含seg头部的大小		kerneldump解析
+1、在viewttool/figure.py中，kerneldump在导出时，首先去看kerneldump有几个，因为一个kerneldump文件不能大于500M，导出后又把多个kerneldump文件合并成一个kerneldump文件；
+2、kerneldump是从1000地址开始的，kerldump的头中包含seg表示seg的个数，size表示seg的大小，是所有seg还是单个seg大小？size应该是所有seg的大小，这个size是不包含kerneldump的头的！
+3、seg的结构体就是u64 addr、u64 size，这个seg的size不包含seg头部的大小；
