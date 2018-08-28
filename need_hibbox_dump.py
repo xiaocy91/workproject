@@ -295,3 +295,60 @@ smc的数据结构是u64、u8、u8、u8和一个union中包含u64或者u32，只
 1、在viewttool/figure.py中，kerneldump在导出时，首先去看kerneldump有几个，因为一个kerneldump文件不能大于500M，导出后又把多个kerneldump文件合并成一个kerneldump文件；
 2、kerneldump是从1000地址开始的，kerldump的头中包含seg表示seg的个数，size表示seg的大小，是所有seg还是单个seg大小？size应该是所有seg的大小，这个size是不包含kerneldump的头的！
 3、seg的结构体就是u64 addr、u64 size，这个seg的size不包含seg头部的大小；
+	2018/8/17	Hibbox需求	林俊杰，lpm3.bin解析	
+问题>>>>>：
+
+	1、数据格式是
+cpu0、cpu1……cpun
+ls0-sp-0、ls0-sp-1……ls0-sp-n
+ls1-sp-0、ls1-sp-1……ls1-sp-n
+2、08 0a c5 c5中，最左边的0不能舍掉		lpm3.bin解析
+1、u64位是8字节，u32是4字节；
+2、Python中file.read(number)，这里number代表的是字节；
+3、要解析的结构体
+struct{
+u32 acore_pc[CPU_CORE_NUM*2];
+u32 acore_ls0_p[CPU_CORE_NUM*2]；
+u32 acore_ls1_p[CPU_CORE_NUM*2]；
+}
+4、修改的文件lmp3/lmp3_parse.py文件。fomat的格式是Q*8，数据格式是
+cpu0、cpu1……cpun
+ls0-sp-0、ls0-sp-1……ls0-sp-n
+ls1-sp-0、ls1-sp-1……ls1-sp-n
+5、分三次读出数据
+cpu = struct.unpack(fomat,file.read(struct.caculsize(fomat)))
+ls0 = struct.unpack(fomat,file.read(struct.caculsize(fomat)))
+ls1 = struct.unpack(fomat,file.read(struct.caculsize(fomat)))
+6、corename为(cpu,ls0,ls1)，需要将corename和cpu、ls0、ls1数据一一对应起来，所以使用zip函数将他们压缩起来。
+((cpu,cpu),(ls0,ls0),(ls1,ls1))
+7、然后根据cpu数据的高八位、低八位来来判断cpu是否异常，来决定是否显示后面的ls0和ls1的数据。
+							hibbox无法导出data/log/logservice下文件
+1、原因:logservice下文件的文件名中包含空格，导致在puITem函数中，执行'adb shell ls -l /data/log'后，得到的所有文件为:
+-xxx ……  04:46  Ea218 xy.zip
+因为在处理这行数据的时候，直接split()，就导致Ea218 xy.zip被split开了，所以没有导出来；
+2、linux系统中，还有软链接文件。通过ls执行后，显示是:
+lxxxxx …… 04:46 kmsgcat-log-ln -> kmsgcat-log
+3、处理办法，是通过ls -l /查看根目录来确认文件名重第几列开始的，然后从那一列开始获取文件名。
+							hibbox中出现离线解析出现unkown
+1、原因:是因为13_data_log中，reaility中有一个history.log文件，且该文件格式不对，所以出现unkown。
+2、处理:在getHistorylog函数中，将查找文件的范围改成仅在hisi_logs下查找。
+							ftp_log.log上传到大数据平台
+
+一、接口规则
+1、每组数据，键值之间用三个分号隔开key:::value
+2、多组数据用分号隔开
+key:::value;key:::value;key:::value;key:::value
+3、ftp_log.log结尾换行
+4、key值不能为中文，key值不为空；value值可为中文，value值可为空；key和value中不能包含回车、分号、冒号
+
+二、可能存在的异常
+1、ftplog中存在key:::value数据对，key值不为空、value为空的情况。这里需要容错处理;
+							2018/8/25修改记录
+1、lpm3解析
+2、hibbox同时导出hisi_logs 和  data_log，弹框显示unkown问题？
+是因为，getHisilog函数里面查找history.log的目录范围为整个Log0.9目录，修改查找范围为Log0.9+04_hisi_logs目录。
+3、无法导出/data/log/LogService日志？
+因为LogService日志中包含空格。ls -l命令显示，包含转义EL\ test.zip，将ls -l |cat管道cat输出后，转义字符就没有了。
+然后，导出时添加双引号，如adb pull /data/log/EL\ test.zip d:\EL test.zip。
+4、ftp_log.log参数行重复问题？
+fp.seek只用于读数据，不影响写入数据。r+用于读写，但是读了以后，要fp.seek(0)才可以写，否则报错；w+用于读写，但是写的时候，会把原本的内容清空。
