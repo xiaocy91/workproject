@@ -619,3 +619,12 @@ print(list_copy)
 
 2、class类中全局变量
 class类中全局变量，是所有对象共用的，每个类都可以对全局变量进行修改；如果要每个对象的全局变量互不影响，需要使用copy.deepcopy。
+
+#######################
+	hibbox发布流程		hibbox发布流程
+1、Hibbox新增需求，需要补充测试用例;
+2、在update_log.py文件中添加更新日志，在about.py中升下版本号；
+3、运行setup.py，将Hibbox.py打包成Hibbox.exe，打包好的文件存放在工程根目录\Hibbox\Hibbox.exe下;
+4、确认ftp.py文件是否有修改，修改过后，需要使用Pyinstaller重新打包ftp.py为ftp.exe。打包好的ftp.exe放在ftp.py所在目录下dist\ftp.exe下。
+5、将hibbox.exe、configs\ftp.exe、configs\dump.exe、configs\responsibily.xlsx、configs\update.exe文件打包成Hibbox_版本号_日期.rar格式，上传到；
+6、使用update_version.py更新hibbox版本；更新版本后需要测试是否会提示自动升级；
