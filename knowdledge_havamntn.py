@@ -153,3 +153,8 @@ GcovFastboot.GcovFastbootDump类里面，要调用log.EXECUTE里面的EXE(cmd)�
 4.1、方法一。GcovFastboot.GcovFastbootDump里面不执行log.EXECUTE.EXE(cmd)方法，只是处理完fastboot命令，合成要导出数据的命令fastboot oem memorydump，然后log.EXECUTE中调用处理好的fastboot oem memorydump命令；
 4.2、方法二。把log.EXECUTE.EXE(cmd)方法，直接当参数，传入到GcovFastboot.GcovFastbootDump里面，直接使用传入的EXEXE(cmd)方法执行fastboot oem memorydump命令；
 5、总的来说，就是把log.EXECUTE当成主对象，把GcovFastboot.GcovFastbootDump当成被调用的对象！
+#######################	hava压力测试100次		hava压力测试100次
+
+1、startup.sh中修改case_path为/case/mntn/kerneldump021；
+2、在android中修改，是本地执行还是蝴蝶执行，只有本地执行才有local run number，就是运行次数；所以要修改android.xml中为LOCAL，运行次数为100；然后执行startup.sh运行；
+3、hava平台有一个qta_git更新，是存放脚本和更新android.xml的地方；

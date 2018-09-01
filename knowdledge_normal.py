@@ -628,3 +628,11 @@ class类中全局变量，是所有对象共用的，每个类都可以对全局
 4、确认ftp.py文件是否有修改，修改过后，需要使用Pyinstaller重新打包ftp.py为ftp.exe。打包好的ftp.exe放在ftp.py所在目录下dist\ftp.exe下。
 5、将hibbox.exe、configs\ftp.exe、configs\dump.exe、configs\responsibily.xlsx、configs\update.exe文件打包成Hibbox_版本号_日期.rar格式，上传到；
 6、使用update_version.py更新hibbox版本；更新版本后需要测试是否会提示自动升级；
+
+#######################
+	拖拽文件进去的drop使用		
+2、解析的问题
+拖拽文件进去的drop使用
+
+#######################
+	complie的使用		complie(blackbox_mntn_test_004.py,single)

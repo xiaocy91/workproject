@@ -1,7 +1,5 @@
-标记	时间	需求类型	需求详情		问题		代码实现
-
-##################################
-	2018/3/22	
+时间	需求类型	需求详情		问题		代码实现
+2018/3/22	
 Hibbox需求
 
 	
@@ -21,9 +19,7 @@ status:closed
 	
 panel画板和textctrl元素绑定bind事件时，id不能重复，这里id设置为-1,系统会自动分配id
 
-
-##################################
-	2018/4/3	
+2018/4/3	
 Hibbox需求
 	
 CONN版本适配
@@ -59,9 +55,7 @@ else:
 
 
 
-
-##################################
-	2018/4/25	
+2018/4/25	
 dump需求
 	
 1、dump增加删除日志功能；
@@ -80,11 +74,11 @@ title=[type,desc,existsub,miami,chicago,boston]
 其中，boston型号为3670，miami为6260
 2、re匹配功能，匹配os.walk下所有文件
 
-							需求1*
+						需求1*
 删除日志功能直接在dump.py中修改，增加remove参数，执行命令：
 -s=0123ABCDEF remove all    #可以删除全部日志
 -s=0123ABCDEF remove hisi_logs,lpm3  #可以选择性的删除hisi_logs,lpm3日志
-							
+						
 需求2*
 1、在util下存放一个configs/responser.xls表，表中包括主类型、子类型，新增加一个xlstopy.py文件，将responser.xls转化为responser.py文件，responser.py存放resetType数据和subResetType数据；
 2、使用gtsheet.py文件来查询responser.py文件中的数据；
@@ -92,7 +86,7 @@ title=[type,desc,existsub,miami,chicago,boston]
 3、使用keyinfo.py文件中，设置各种ip、sn号、die_id、rom、ddr信息，然后生成base_log.log文件；
 4、使用keyinfo.py文件中信息和获取blame中数据，合成一个ftp_log.log文件；
 
-							
+						
 import os
 cmd=
 map=[ 
@@ -110,9 +104,7 @@ for i in map:
             cmd=i.get(func).replace($arg$,cmd)
             eval(cmd)
 
-
-##################################
-	2018/5/25	Hibbox需求	
+2018/5/25	Hibbox需求	
 hibbox2.0项目hibbox工具适配:
 1、IRQ中diaginfo;
 2、top_head.txt适配excetion_trace;
@@ -131,7 +123,7 @@ status:closed
 hibbox适配diaginfo:
 修改ap/hook_head.py和comm/version.py文件，增加diaginfo信息
 
-							
+						
 hibbox适配林俊杰的bbox.bin：
 1、林俊杰给的bbox.bin文件解析报错，说读取的struct.unpack时提示字符串长度不够258。
 2.定位到解析area_s时出的错误
@@ -142,26 +134,26 @@ u8类型可能是假字符串，它是把int存在char中，为了省空间。�
 4.area_s的format格式为QI4x，4x为自动补齐！否则会影响clear_text的解析！
 
 
-							
+						
 修改了责任人表中异常复位类型对应的责任人
 
-							
+						
 miami平台，所有版本670都改成了710
 
-							
+						
 hibbox导出vendor日志功能已经有了
 
 
-							
+						
 其他功能修复：
 1、增加top_head.txt中解析area_s;
 2、NOC增加NOC 980.py
 
-							
+						
 debug设置保存后，不再弹框提示：
 使用configparse模块，配置文件保存在configs/debug.conf
 
-			hibbox2.0项目hibbox工具适配（补充）		问题：
+		hibbox2.0项目hibbox工具适配（补充）		问题：
 1、检测不到平台，不弹框显示；
 2、检测到平台，使其检测到平台；		bbox2.0项目hibbox版本适配及发布:
 1.适配IRQ中diaginfo，且IRQ中个模块数据新增i_rdx和count字段；
@@ -180,9 +172,7 @@ NOC 980适配
 1、parse_script.py中about.py修改版本号为2.7.3；
 2、parse_script.py中update.log中，增加版本修改日志；
 3.使用ftp.py修改服务器上的version;
-
-##################################
-	2018/5/27	
+2018/5/27	
 dump需求
 
 	
@@ -211,9 +201,7 @@ closed:
 4.2、需要把ELEM.ANDROID_VERSION的判断提前到dump.py中，在ddrdump方法中添加判断版本的方法，但是在fastboot模式是不能执行adb get property来获取版本8.1.0的，所以，如果是fastboot模式，必须先进去到adb来判断版本，然后再导日志;
 4.3.在dump.py中增加，ddrdump中，如果是fastboot状态就重启到adb下，获取版本号，并设置ELEM中版本号;.然后根据memory还是kernel或者是没有参数，这里只说kernel的条件下，根据版本号来过滤参数args，此时版本号已经为8.1.0的P版本，过滤的参数就包含了vendor日志;之前就是版本不对，导致参数过滤不到vendor日志;
 
-
-##################################
-	2018/6/20	工具难题	之前曾经工作中遇到最大的几个问题	
+2018/6/20	工具难题	之前曾经工作中遇到最大的几个问题	
 问题>>>>>：
 
 	之前曾经工作中遇到最大的几个问题:
@@ -221,16 +209,12 @@ closed:
 2.hibbox跟数据库的兼容问题;
 3.hibbox用pyintaller或者py2.exe打包;
 4.dump工具在hava平台，因为日志太大卡死的问题;是因为执行命令时，如果命令不成功就一直等待，需要另外开一个线程subprocess.popen来执行命令;		
-
-##################################
-	2018/6/29	Hibbox需求	林俊杰cupidle.txt、lrq.txt、cup_on_off.txt等文件转换	
+2018/6/29	Hibbox需求	林俊杰cupidle.txt、lrq.txt、cup_on_off.txt等文件转换	
 问题>>>>>：
 
 	ftp_log.log中换行符在数据中间：
 在sql.py中像ftp_log.log中添加了数据，在另外一个中blame和ftp_log方法中有写入数据，调用这两个写入的地方在utf_addr_version中		1、ftp.py被打包成了ftp.exe执行，系统调用config/ftp.exe，而不是调用ftp.py；整个hibbox项目用py2打包，只有ftp.py用pyinstaller打包；
-
-##################################
-	2018/7/8	Hibbox需求	林俊杰Exception解析	
+2018/7/8	Hibbox需求	林俊杰Exception解析	
 问题>>>>>：
 
 	1、copy.deepcopy的使用？
@@ -241,7 +225,7 @@ class类中全局变量，是所有对象共用的，每个类都可以对全局
 u8 是 unsigned char
 u16 是 unsigned short
 u32 是 unsigned int
-							Python 十进制转二进制、八进制、十六进制
+						Python 十进制转二进制、八进制、十六进制
 dec = int(input(输入数字：))
 
 print(十进制数为：, dec)
@@ -254,16 +238,16 @@ print(转换为十六进制为：, hex(dec))
 转换为二进制为： 0b101
 转换为八进制为： 0o5
 转换为十六进制为： 0x5
-							extrace解析
+						extrace解析
 1.Apexc 0x200大小、BL31exc 0x100大小，数据结构一样；BL31smc 0x3F00大小；
 2.它们的头部都是一样的，使用hisiap_ring_buffer这个结构来存放；只是数据单元部分有点区别；
 3.APexc、BL31exc是分cpu的，BL31smc是不分cpu的；
 4.通过shift.BBOX_SHIFT.shift(EXTRACE)方法来获取基地址0x7c000；
 5.然后开始解析，需要在hisiap_ring_buffer这个类里面添加解析方法，方法为parse，传入一个对象，对象包含参数addr、offset，读取的数据存放到hisiap_ring_buffer，这样头部就初始化好了；根据头部信息来解析这个数据段；
 
-							repr() 函数将对象转化为供解释器读取的形式extrace解析
-							ord()函数主要用来返回对应字符的ascii码，chr()主要用来表示ascii码对应的字符他的输入时数字，可以用十进制，也可以用十六进制。
-							Exception适配遇到的问题
+						repr() 函数将对象转化为供解释器读取的形式extrace解析
+						ord()函数主要用来返回对应字符的ascii码，chr()主要用来表示ascii码对应的字符他的输入时数字，可以用十进制，也可以用十六进制。
+						Exception适配遇到的问题
 1、struct.unpack中使用X补全
 1.1补全的例子
   string = 'test astring'  
@@ -277,25 +261,21 @@ smc的数据结构是u64、u8、u8、u8和一个union中包含u64或者u32，只
 5.round方法可以保留小数点后面几位，round(num,num_digits)，num_digits是四舍五入保留的小数位；
 6.zip函数可以将多个列表压缩为字典；
 
-
-##################################
-	2018/7/8	Hibbox需求	袁旦，ftp.log生成后不删除	
+2018/7/8	Hibbox需求	袁旦，ftp.log生成后不删除	
 问题>>>>>：
 
 	ftp.py修改后，需要重新打包成ftp.exe		1.ftp这一块的问题
 1.1、ftp.py中，发送消息message中，引入了pika第三方库，所以要用pyinstaller打包成ftp.exe，因为使用.py时，参数不能太长，有长度限制！
 1.2、注释掉ftp中os.path.exists('ftp.log')后，运行hibbox还是没有产生ftp.log文件；是因为没有将ftp.py重新打包成ftp.exe，hibbox运行中实际调用的ftp.exe，而不是调用ftp.py文件！
 
-
-##################################
-	2018/7/17	Hibbox需求	林俊杰，kerneldump解析	
+2018/7/17	Hibbox需求	林俊杰，kerneldump解析	
 问题>>>>>：
 
 	seg的结构体就是u64 addr、u64 size，这个seg的size不包含seg头部的大小		kerneldump解析
 1、在viewttool/figure.py中，kerneldump在导出时，首先去看kerneldump有几个，因为一个kerneldump文件不能大于500M，导出后又把多个kerneldump文件合并成一个kerneldump文件；
 2、kerneldump是从1000地址开始的，kerldump的头中包含seg表示seg的个数，size表示seg的大小，是所有seg还是单个seg大小？size应该是所有seg的大小，这个size是不包含kerneldump的头的！
 3、seg的结构体就是u64 addr、u64 size，这个seg的size不包含seg头部的大小；
-	2018/8/17	Hibbox需求	林俊杰，lpm3.bin解析	
+2018/8/17	Hibbox需求	林俊杰，lpm3.bin解析	
 问题>>>>>：
 
 	1、数据格式是
@@ -322,17 +302,17 @@ ls1 = struct.unpack(fomat,file.read(struct.caculsize(fomat)))
 6、corename为(cpu,ls0,ls1)，需要将corename和cpu、ls0、ls1数据一一对应起来，所以使用zip函数将他们压缩起来。
 ((cpu,cpu),(ls0,ls0),(ls1,ls1))
 7、然后根据cpu数据的高八位、低八位来来判断cpu是否异常，来决定是否显示后面的ls0和ls1的数据。
-							hibbox无法导出data/log/logservice下文件
+						hibbox无法导出data/log/logservice下文件
 1、原因:logservice下文件的文件名中包含空格，导致在puITem函数中，执行'adb shell ls -l /data/log'后，得到的所有文件为:
 -xxx ……  04:46  Ea218 xy.zip
 因为在处理这行数据的时候，直接split()，就导致Ea218 xy.zip被split开了，所以没有导出来；
 2、linux系统中，还有软链接文件。通过ls执行后，显示是:
 lxxxxx …… 04:46 kmsgcat-log-ln -> kmsgcat-log
 3、处理办法，是通过ls -l /查看根目录来确认文件名重第几列开始的，然后从那一列开始获取文件名。
-							hibbox中出现离线解析出现unkown
+						hibbox中出现离线解析出现unkown
 1、原因:是因为13_data_log中，reaility中有一个history.log文件，且该文件格式不对，所以出现unkown。
 2、处理:在getHistorylog函数中，将查找文件的范围改成仅在hisi_logs下查找。
-							ftp_log.log上传到大数据平台
+						ftp_log.log上传到大数据平台
 
 一、接口规则
 1、每组数据，键值之间用三个分号隔开key:::value
@@ -343,7 +323,21 @@ key:::value;key:::value;key:::value;key:::value
 
 二、可能存在的异常
 1、ftplog中存在key:::value数据对，key值不为空、value为空的情况。这里需要容错处理;
-							2018/8/25修改记录
+						2018/8/25修改记录
+1、lpm3解析
+2、hibbox同时导出hisi_logs 和  data_log，弹框显示unkown问题？
+是因为，getHisilog函数里面查找history.log的目录范围为整个Log0.9目录，修改查找范围为Log0.9+04_hisi_logs目录。
+3、无法导出/data/log/LogService日志？
+因为LogService日志中包含空格。ls -l命令显示，包含转义EL\ test.zip，将ls -l |cat管道cat输出后，转义字符就没有了。
+然后，导出时添加双引号，如adb pull /data/log/EL\ test.zip d:\EL test.zip。
+4、ftp_log.log参数行重复问题？
+fp.seek只用于读数据，不影响写入数据。r+用于读写，但是读了以后，要fp.seek(0)才可以写，否则报错；w+用于读写，但是写的时候，会把原本的内容清空。
+						ftplog上传到大数据平台的测试
+1、使用adb shell ecall read_u32命令触发panic复位
+2、在使用tombsone或者anr或者drop触发；
+3、使用hibbox工具导出完整日志，打包成压缩包；
+4、在大数据平台在线解析，解析完成，没有出现解析异常；
+						2018/8/25修改记录
 1、lpm3解析
 2、hibbox同时导出hisi_logs 和  data_log，弹框显示unkown问题？
 是因为，getHisilog函数里面查找history.log的目录范围为整个Log0.9目录，修改查找范围为Log0.9+04_hisi_logs目录。
