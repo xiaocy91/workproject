@@ -636,3 +636,54 @@ class类中全局变量，是所有对象共用的，每个类都可以对全局
 
 #######################
 	complie的使用		complie(blackbox_mntn_test_004.py,single)
+
+#######################
+	Python静态方法使用		Python静态方法使用
+类中，非静态方法可以调用静态方法，静态方法不可以调用非静态方法。
+比如，类型staticmethod不可以调用self类型的method。
+
+#######################
+	hibbox内存解析		hibbox内存解析
+
+bbox文件解析
+1、bbox.bin位置00_ddrdump/bbox.bin;
+2、conn适配。
+bbox.bin拖拽解析后，00_ddrdump/top_head.txt文件中，不同版本中，有的有conn，有的没有conn;
+3、exception适配。
+bbox.bin拖拽解析后，解析exception到
+00_ddrdump/bbox/excinfo/文件夹下，exception的基地址在00_ddrdump/top_head.txt中可以看到，在程序中是通过shift.py中SHIFT_BBOX(EXCEPTION)获取到的;
+
+kerneldump解析
+1、kerneldump.bin位置是在00_ddrdump/kerneldump.bin，解析后存放在00_ddrdump/kerneldump下面;
+
+lpm3解析
+1、lpm3.bin位置在00_ddrdump/lpm3.bin，解析后放在00_ddrdump/lpm3下;
+问题:电压的那个00_ddrdump/lpm3/obj/lpm3_image.bin解析的问题???
+
+#######################
+	git使用		repo只拉取一个仓
+repo sync vendor/hisi/ap -c --no-tags
+
+
+#######################
+	git使用		git服务器搭建
+1、在39.106.26.41中/home/创建gitserver目录，在/home/gitserver下面，
+使用git init -bare myserver.init命令，来创建一个裸仓，来当共享仓库，它没有工作区。
+
+git客户端搭建
+1、在自己电脑上，创建一个目录gitclient，在里面执行git init来创建一个普通仓库。
+2、初始化配置
+$ git config --global user.name 输入你的用户名
+$ git config --global user.email 输入你的邮箱
+3、添加远程仓库
+执行git remote add mainStore root@39.106.26.41:/home/gitserver/myserver.init命令，添加远程仓库mainStore;
+4、创建一个分支 ，并切换到该分支
+git checkout -b firstbranch
+5、条件修改
+git add 和git commit使用
+6、同步到远程仓库
+repo push mainStore firstbranch:serverFirstbranch
+这里是把代码推送到远程仓库mainStore上，且把本地的firstbranch推送到远程的serverFirstbranch上;
+7、查看远程分支
+使用git branch -a可以同时查看本地分支和远程分支;
+			

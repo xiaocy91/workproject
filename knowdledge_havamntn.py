@@ -153,8 +153,60 @@ GcovFastboot.GcovFastbootDump类里面，要调用log.EXECUTE里面的EXE(cmd)�
 4.1、方法一。GcovFastboot.GcovFastbootDump里面不执行log.EXECUTE.EXE(cmd)方法，只是处理完fastboot命令，合成要导出数据的命令fastboot oem memorydump，然后log.EXECUTE中调用处理好的fastboot oem memorydump命令；
 4.2、方法二。把log.EXECUTE.EXE(cmd)方法，直接当参数，传入到GcovFastboot.GcovFastbootDump里面，直接使用传入的EXEXE(cmd)方法执行fastboot oem memorydump命令；
 5、总的来说，就是把log.EXECUTE当成主对象，把GcovFastboot.GcovFastbootDump当成被调用的对象！
-#######################	hava压力测试100次		hava压力测试100次
+
+#######################
+	hava压力测试100次		hava压力测试100次
 
 1、startup.sh中修改case_path为/case/mntn/kerneldump021；
 2、在android中修改，是本地执行还是蝴蝶执行，只有本地执行才有local run number，就是运行次数；所以要修改android.xml中为LOCAL，运行次数为100；然后执行startup.sh运行；
 3、hava平台有一个qta_git更新，是存放脚本和更新android.xml的地方；
+
+#######################
+	gcov手动生成报告		gcov中kernel手动生成报告
+1、执行adb shell ecall read_u32 0来触发panic复位，然后执行fastboot oem boot进入安卓，执行.bat文件来抓取数据生成一个.tar.gz文件；
+2、解压.tar.gz文件，搜索mntn_file来找到gcda文件。然后找到对应版本的编译包，在image/lib/gcov_en.tar.gz文件，解压，搜索mntn_file关键字，找到gcno文件；
+说明:在烧写的镜像包里如果只搜索gcno关键字有很多gcno，如果只搜索mntn_file关键字，只搜索到temp_mntn_file.gcno文件
+3、把gcno、gcda文件上传到编译云，通过window把文件放在编译云服务器99上，然后使用scp命令，把文件复制到目标电脑，先在目标电脑/home/get_gcov_data/clv1.2/下建一个gcov_kernel文件夹。然后使用命令:
+scp gc* root@100.100.100.225:/home/get_gcov_data/clv1.2/
+4、到目标电脑225上，进入clv1.2/gcov_kernel文件夹，然后执行一个gc -o . -c *的命令，在执行一个result的命令，这样就产生对应的result。使用scp命令将result复制到自己的编译云99上，通过window来查看报告。
+
+
+gcov中fastboot手动生成报告
+1、首先执行fastboot watchdog enable命令，然后用get_fastboot_data.sh命令来导出重启之前的数据。
+2、然后再执行fastboot oem boot命令，来进入安卓。
+说明: fastboot oem boot之前，要执行一个fastboot init的命令。
+3、然后再用get_fastboot_data.sh导出数据.tar.gz文件
+4、把多次导出的tar.gz文件，全部放到gcov_get_data/gcov_cl1.2下面，然后执行source gcov.sh命令，就生成了对应的报告；
+
+#######################
+	编写的watchdog001用例		编写的watchdog001用例
+测试步骤
+1、执行fastboot watchdog ap enable
+2、adb shell
+       dmesg>>dmesg.txt
+3、adb pull dmesg.txt /home/dmesg.txt
+4、查看dmesg.txt中是否有关键字click no 3
+
+实现脚本watchdog_mntn_test_0001
+1、init部分
+androidCase.init
+watchdog.init
+2、setup部分
+BootToAndroid
+deletekmsg
+3、testStep部分
+self.pass = false
+if whetherInAndroid:
+    RebootBootloader
+    if whetherResetSuccessfully:
+       enable(watchdog enable)
+       BootToAndroid
+    if whetherBootsuccessfully:
+      self.pass = seachkey(click no 3)
+ checkpoint(self.pass,true)
+
+4、teardown
+bootToAndroid
+savekmsglog
+
+
