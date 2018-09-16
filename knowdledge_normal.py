@@ -686,4 +686,42 @@ repo push mainStore firstbranch:serverFirstbranch
 这里是把代码推送到远程仓库mainStore上，且把本地的firstbranch推送到远程的serverFirstbranch上;
 7、查看远程分支
 使用git branch -a可以同时查看本地分支和远程分支;
-			
+
+#######################
+	hibbox版本自动检查更新		hibbox版本自动检查更新
+1、首先在hibbox.py文件中，有mainapp类，在该类中使用thread线程来调用hibbox_manage函数并传入参数;
+2、comm/version.py/hibbox_manage函数中，使用subprocess.open进程来调用update_version.exe ./configs/hibbox_version命令，来执行获取最新版本的功能;
+3、使用subprocess不使用os.system(cmd)是避免出现运行卡死的情况;
+4、parsescripts/viewtool/update_version.py函数中，导入ftplib模块，然后通过用户和密码创建ftpconnection，然后download最新的版本文件/log/hava/hibbox/hibbox_version，读取里面的版本号，与当前about.py中的版本号对比，如果当前版本号小于最新版本号，就使用
+import webbrowser
+webbrowser.open(url)
+跳转到最新hibbox工具下载的页面;
+
+#######################
+	hibbox中py2exe打包文件		hibbox中py2exe打包文件
+
+1、首先导入包
+from distutils.core import setup
+import py2exe
+2、将py2exe添加到sys运行参数中
+import sys
+sys.argv.append(py2exe)
+这样运行文件就等于执行python file_name py2exe命令了
+3、然后添加setup入口函数
+setup(console=[helloworld.py])
+上面的命令执行后将产生一个名为dist的子目录，其中包含了helloworld.exe,python24.dll,library.zip这些文件。 
+4、如果要把python编译的所有文件打包到一个exe中，就需要在setup()这个函数中，要设置2个参数：options中的bundle_files和zipfile。
+5、其中bundle_files有效值为：
+5.1、3 (默认)不打包。
+5.2、2 打包，但不打包Python解释器。
+5.3、1 打包，包括Python解释器。
+6、zipfile的有效值为:
+6.1、不填(默认) 生成一个library.zip文件 ;
+6.2、None 把所有东西打包进.exe文件中;
+7、把文件打包成一个.exe，且不产生library.zip的方法如下:
+setup(
+console=[helloworld.py]，
+zipfile = none,
+options = {py2exe : {bundle_files:1}}
+)
+8、上面创建了一个控制台的helloword.exe程序，如果要创建一个图形用户界的程序，需要将中的console=[helloworld.py]替换为windows=[helloworld.py]既可。 
