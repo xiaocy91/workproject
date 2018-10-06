@@ -725,3 +725,45 @@ zipfile = none,
 options = {py2exe : {bundle_files:1}}
 )
 8、上面创建了一个控制台的helloword.exe程序，如果要创建一个图形用户界的程序，需要将中的console=[helloworld.py]替换为windows=[helloworld.py]既可。 
+
+#######################
+	类和默认参数相关问题		1、子类省略init方法，父类中init带参数的初始化方法是否可以成功？
+解:可以成功
+class Parent(object):
+  def __init__(self,arg1):
+     print arg1
+
+class Child(parent):
+  def outputArg(self):
+     print self.arg1
+
+child = Child()
+child.outputArg()
+输出:
+arg1
+原因:当子类没有初始化父类方法时，父类的初始化参数值就是它的名称。
+
+2、Python中默认参数可以不传吗？
+解:默认参数可以不传
+def argTest(arg1,arg2=argname2):
+  print arg1
+  print arg2
+argTest(argname1)
+结果:
+argname1
+argname2
+
+3、python 默认参数不能放在必选参数前面。
+def operation(self,cls,first_node,second_node=,addr)这样写会报错，要改成def operation(self,cls,addr,first_node,second_node=)
+
+
+
+#######################
+	r+读写文件		fpy.py中打开文件的方式，如何实现一次读取并写入ftp_log.log?
+解:使用r+当时打开，可以读写，读的时候文件内容不变，写的时候会清空内容，重新写新的内容，写内容之前必须使用fp.seek(0,0)，不然会出错。
+
+#######################
+	classmethod使用方法？？		classmethod和staticmethod区别？？？？？？？？？？？？？？
+
+#######################
+	sys.stderr定向输出？？		将textCtrl输出对象当参数传入线程后，sys.stderr=textCtrl后，sys.stderr作为全局变量，在其它函数内部使用，值也是有效的吗？？？？？？？

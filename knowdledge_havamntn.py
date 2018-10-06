@@ -210,3 +210,43 @@ bootToAndroid
 savekmsglog
 
 
+
+#######################
+	coresight用例实现re使用		正则表达式使用1
+1.1、coresight用例，中遍历/sys/date/plateforms/etm8000.etm节点，通过adb shell ls -l命令，查看文件权限。第一个位置，d表示目录，-表示普通文件，l表示链接文件;接着是文件所属用户权限、文件组权限、其他用户权限;
+1.2、这里只看文件所属用户权限，如果是r--就只cat，如果是rw-就cat再把cat的值写进去，如果是-w-就echo 0x1进去;
+1.3、正则表达式使用匹配字符串里面是否包括[rw]读或者写操作，如果包括，再继续处理;
+
+正则表达式使用2
+2.1、在处理责任人表时，使用re.relace(fomat，new_fomat,value)
+就是将结尾的空格或者\n\r换行;
+2.2、正则表达式匹配history.log中最后一行中的16位日期\d{8}-\d{8}，然后查找日期对应的文件;
+
+#######################
+	hava kernel数据适配		hava kernel数据适配
+pla3-pylib下，有utils-commutils类，是所有用例类的父类，调用gcovdump用来导出数据; gcovdump文件有gcov导出日志命令基本方法:log中printEXE也调用gcovdump中方法;
+
+
+#######################
+	linux下上一级目录		linux下上一级目录
+1、gcov/git/lcov1.1.2/下，lcov1.1.2下有bin;
+2、gcov/git/get_gcov_data，下有get_report.sh文件;
+3、在gcov/git/get_gcov_data下，执行gcov/git/lcov1.12/bin下文件，可以写成:
+../lcov1.12/bin来执行;
+
+#######################
+	正则表达式group和groups		import struct
+regex = re.compile((?P<head1>hello\w*)--(?P<head2>hello\w*))
+str = '''hello1--hello2ddd hello3dd--hello4444444 
+hello777 
+'''
+match_result = regex.match(str)
+findall_result = regex.findall(str)
+ 
+print group:,match_result.group()
+print groups:,match_result.groups()
+print findall:,findall_result
+显示结果：
+group: hello1--hello2ddd
+groups: ('hello1', 'hello2ddd')
+findall: [('hello1', 'hello2ddd'), ('hello3dd', 'hello4444444')]
