@@ -767,3 +767,91 @@ def operation(self,cls,first_node,second_node=,addr)这样写会报错，要改�
 
 #######################
 	sys.stderr定向输出？？		将textCtrl输出对象当参数传入线程后，sys.stderr=textCtrl后，sys.stderr作为全局变量，在其它函数内部使用，值也是有效的吗？？？？？？？
+
+#######################
+	月度跟踪表刷新		2月度跟踪表刷新，规范，避免扣钱
+2.1开发类型还是看护类型
+2.2任务描述
+2.3任务输入
+2.4计划起始日期-计划结束日期
+2.5实际起始日期-实际结束日期
+2.6当月计划天数-当月实际天数
+2.7评分，实效性，评价人，评分理由
+
+#######################
+	bbox文件解析		bbox文件解析
+1、bbox.bin位置00_ddrdump/bbox.bin;
+2、conn适配。
+bbox.bin拖拽解析后，00_ddrdump/top_head.txt文件中，不同版本中，有的有conn，有的没有conn;
+3、exception适配。
+bbox.bin拖拽解析后，解析exception到
+00_ddrdump/excinfo/文件夹下，exception的基地址在00_ddrdump/top_head.txt中可以看到，在程序中是通过shift.py中SHIFT_BBOX(EXCEPTION)获取到的;
+4、kerneldump适配。
+
+#######################
+	时间模块		时间模块
+1. time模块
+1.1时间戳与时间数组
+time.time()是时间戳。time.localtime(时间戳)或者time.gmtime(时间戳)产生数组；time.mktime(时间数组)产生时间戳。
+1.2时间数组与格式化时间
+time.striptime(格式化时间，时间格式)产生时间数组；time.strftime(时间数组，时间格式)产生格式化时间；time.asctime(时间数组)产生固定格式的格式化时间。
+1.3格式化时间与时间戳
+time.ctime(时间戳)，产生固定格式的格式化时间；
+
+2、datetime模块
+datatime模块重新封装了time模块，提供更多接口，提供的类有：date,time,datetime,timedelta,tzinfo。
+
+#######################
+	Python初学之sys、os、platform模块		三、os模块
+Python的标准库中的os模块主要涉及普遍的操作系统功能。可以在Linux和Windows下运行，与平台无关。
+3.1、os.sep 可以取代操作系统特定的路径分割符。 
+3.2、os.linesep字符串给出当前平台使用的行终止符。例如，Windows使用'\r\n'，Linux使用'\n'而Mac使用'\r'。
+3.3、os.getcwd()函数得到当前工作目录，即当前Python脚本工作的目录路径。 
+os.getenv()和os.putenv()函数分别用来读取和设置环境变量。 
+3.4、os.listdir()返回指定目录下的所有文件和目录名。 
+3.5、os.makedirs(path) 多层创建目录；os.mkdir(path) 创建目录；os.remove()函数用来删除一个文件。 
+3.6、os.system()函数用来运行shell命令。
+3.7、os.listdir(dirname)：列出dirname下的目录和文件
+3.8、os.getcwd()：获得当前工作目录
+3.9、os.curdir:返回但前目录（'.')
+3.10、os.chdir(dirname):改变工作目录dirname
+3.11、os.walk(dirname):遍历路径下所有文件和目录
+3.12、os.path.isfile()和os.path.isdir()函数分别检验给出的路径是一个文件还是目录。
+3.13、os.path.exists()函数用来检验给出的路径是否真地存在
+3.14、os.path.abspath(__file__):获得绝对路径
+3.15、os.path.join(path,name):连接目录与文件名或目录
+3.16、os.path.basename(path):返回文件名
+3.17、os.path.dirname(path):返回文件路径
+
+#######################
+	struct.pack解析数据注意点		struct.pack解析数据注意点
+
+1、struct .pack默认采用小段存储;
+1.1、什么是小端存储？
+小端存储:较高的有效字节放在较高的存储器地址，较低的字节存放在较低的存储器地址;
+例如:将一个16位的0x1234放在一个短整形变量(short)中。这个短整型变量在内的存储在大端、小端模式如下:
+地址偏移  大端  小端
+0x00         12      34
+0x01          34     12
+
+2、变量对齐问题
+2.1结构体变量中数据模式为QI4x，4x为自动补齐;
+
+#######################
+	hibbox工具界面		1、hibbox工具界面
+1.1菜单栏
+1.1.1文件
+保存monitor，保存backtrace
+1.1.2快速导log，没用
+1.1.3更多
+在线责任人解析、解析hibbox.py目录下全部的bbox.bin和dfx.bin
+1.1.4轨迹，没用了
+1.2工具栏
+在线解析、离线解析、清屏、在线删除日志
+1.3、同时解析两个文件
+拖拽解析一个文件，在没解析完的时候，再解析另外一个文件，在MessageBox方法中，同时解析两个文件会提示正在解析；
+1.4Thread方法中问题？？？？
+thread方法中print方法要加锁，使用的两把不同的锁？另外timer1和timer2方法是干什么的？
+
+2、hibbox工具代码合入去空格
+使用:StripWhitespace方法去空格，去除的是内行末尾多余的空格符；

@@ -157,4 +157,21 @@ hisi_logs下没有产生history.log？查看total_file_num.txt，查找hisi_logs
 3、hibbox导出日志，无法导出13_data_log/LogService下的文件。
 4、日志离线解析中，reliabilty/apperace下有hisitory.log，且其中的记录的复位未知，导致出现unknown！
 5、上次版本验证中，hibbox无法导出日志。trace工具解析有问题？
-					
+
+
+#############################
+
+	
+**14
+	2018/10/8			hibbox解决问题:
+1、多个单板连接导出日志报错;
+1.1、因为导出日志时，有一个ls -l的命令cmd，直接调用的subprocess执行命令cmd，没有replace替换sn号;
+
+2、miami平台新型号手机，无法导出日志;
+2.1、因为需要添加MRK型号;
+
+3、fastboot环境变量的问题.
+3.1获取环境变量存放到变量里面，变量中没有fastboot.exe，就把configs下的fastboot64存放到里面，变量里面就有了fastboot64的环境变量，但是执行的命令确不对了，还是执行的fastboot devices，而不是执行的fastboot64 devices; 所以，相当于还是用的运行者电脑自己的fastboot命令，没有用到fastboot64命令；
+3.2、所以，在两个个单板连接，然后选择SN号时，出现了三个设备，其中一个是fastboot。需要在执行selectplatform之前，检查设备fastboot devices改成fastboot64 devices.
+
+解决办法: c:/windows/system32下面的adb.exe和fastboot.exe没有生效，hibbox工具有时候会调用不到，但是在dos窗口下，执行确可以！adb.exe和fastboot.exe尽量不要放在c:/windows/system32下面。

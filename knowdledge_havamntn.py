@@ -235,7 +235,9 @@ pla3-pylib下，有utils-commutils类，是所有用例类的父类，调用gcov
 ../lcov1.12/bin来执行;
 
 #######################
-	正则表达式group和groups		import struct
+	
+正则表达式group和groups
+		import struct
 regex = re.compile((?P<head1>hello\w*)--(?P<head2>hello\w*))
 str = '''hello1--hello2ddd hello3dd--hello4444444 
 hello777 
@@ -250,3 +252,57 @@ print findall:,findall_result
 group: hello1--hello2ddd
 groups: ('hello1', 'hello2ddd')
 findall: [('hello1', 'hello2ddd'), ('hello3dd', 'hello4444444')]
+
+#######################
+	正则表达式		正则表达式
+1、hibbox工具在产生baselog的时候，匹配一句个字符串中boardid= 0x123ad89，然后获取对应的boardid；
+
+#######################
+	python中xml解析		python中xml解析
+1.使用xml.etree.Element标准库
+2、xml文件是Qtandroid.xml，内容是:
+<common>
+  <>Local<Local>
+  <>Hutaf<>
+<common>
+<device>
+  <sn>012345678ABCDEF</sn>
+  <phoneNumber1>111222</phoneNumber1>
+   <phoneNumber2>111222</phoneNumber2>
+<device>
+
+#######################
+	blackbox_tools学习_20181011		blackbox_tools学习_20181011
+1、blackbox代码存放位置
+main_line/vendor/hisi/ap/kernel/drivers/hisi/mntn/blackbox_tools下；
+2、在该目录下搜索包含某个关键字文件，例如，搜索包含关键字rdr_hisiap_panic_notify的文件，使用命令:
+grep -rn rdr_hisiap_panic_notify .
+其中，.号表示当前目录；
+3、为什么有fastboot状态？
+只要手机上电，就开始进入fastboot阶段，因为这个阶段是准备工作，保证usb是好的、音频、视频是好的，这些前提下，使用fastboot这个外力进入kernel状态。有时候出现复位以后，kernel是没有办法处理系统异常的，所以必须进入到fastboot下去处理。
+4、fastboot oem boot和fastboot reboot的区别？
+如果fastboot走到7、8、9步了，fastboot oem boot是让接着走第10步；而fastboot reboot是从头开始，回到第0步重新开始。所以，fastboot reboot会丢失数据；
+5、复位后关哪些核？留哪些核？
+刚开始上电的时候，ap核以前是只有cpu0工作，到后来因为cpu0处理的任务太多，就变成cpu0-cpu3都工作，减轻cpu0的负担；复位的时候，是依次关闭cpu0、cpu1、cpu2……cpu5等，最后只留下cpu6工作，因为cpu6是产生复位的核，所以是哪个ap核复位就留哪个核，剩下的ap核都关掉，ap核复位的时候，还会通知其他的核，比如通知lpm3的核来处理ap核复位的善后工作，然后blackbox_tools就进去while(1)死循环；
+
+
+#######################
+	blackbox_tools学习_20181011		blackbox_tools学习_20181011
+6、blackbox_tools功能？
+处理内核异常流程的，fastboot保存异常数据到内存，启动后再从内存保存到文件；
+7、black_tools处理分为两个部分
+7.1复位前；先是触发的中断通过维测写到bbox.bin内存中，然后后保存复位信息，包括复位是什么类型、通知哪个内核善后，都保存下来，然后进入复位；
+7.2启动后:复位后重新启动也会调用维测模块；
+8、如何看blackbox_tools框架？
+8.1复位前
+8.1.1执行命令adb shell echo c >/proc/sys-trigger
+8.1.2导出日志fastboot oem memory pstore_rampoos.bin
+8.1.3notepad++打开，查看ecall相关的一块打印，进入blackbox后开始的位置:
+[rdr_hisiap_panic_notify],===>enter panic notify!
+8.2启动后
+8.2.1fastboot oem boot启动后
+8.2.2导出日志adb pull /data/android_log/kmsgcat-log d:\kmsgcat-log
+8.2.3notepad++查看打印信息，开始看的位置:
+bbox_bootcheck]save_hhee_exc_memory:/data/hisi_logs//19700101061806-000004/ap-log
+
+
